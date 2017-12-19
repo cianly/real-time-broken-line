@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <link rel="icon" href="https://static.jianshukeji.com/highcharts/images/favicon.ico">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+
+    <!-- <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script> -->
+
+</head>
+
+<body>
+
+    <div id="main8" style="width:500px;height:300px"></div>
+
+    <script>
+        function activeLastPointToolip(chart) {
+            var points = chart.series[0].points;
+            chart.tooltip.refresh(points[points.length - 1]);
+        }
+
+        $('#main8').highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'spline',
+                backgroundColor: 'rgba(0,0,0,0)',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: function () {
+                        // set up the updating of the chart each second
+                        var series = this.series[0],
+                            chart = this;
+                        var data1 = { "date": ["1511107200", "1511107200", "1511107200", "1511107200", "1511107200", "1511107200", "1511107200"], "value": [50, 72, 82, 91, 69, 48, 65] }
+                        var i = 0;
+                        setInterval(function () {
+                            //var x = new Date(data1.date[i]).getTime();
+                            var x = data1.date[i], // current time
+                                // y = Math.random()*10000;
+                                y = data1.value[i];
+                            series.addPoint([x, y], true, true);
+                            activeLastPointToolip(chart)
+                            i++;
+                            if (i >= 7) {
+                                i = 0;
+                            }
+                        }, 1000);
+                    }
+                }
+            },
+            title: {
+                text: '上网活跃用户数实时变化趋势',
+                style: {
+                    'fontSize': '12px',
+                    'color': "#b5e3fd"
+                }
+            },
+            xAxis: {
+                title: {
+                    text: '时间'
+                },
+                type: 'datetime',
+                tickPixelInterval: 150,
+                labels: {
+                    format: '{value: %m 月 %d 日}'
+                    // align: 'right',
+                    // rotation: -30
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '人数'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#b5e3fd'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%m月%d日', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 0);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            //坐标显示设置
+            series: [{
+                name: '实时活跃人数',
+                // data: (function () {
+                //     // generate an array of random data
+                //     var data = [];
+                //     var data1 = { "date": ["1511107200", "1511107200", "1511107200", "1511107200", "1511107200", "1511107200", "1511107200"], "value": [50, 72, 82, 91, 69, 48, 65] };
+                //     for (var i = -7; i < 0; i++) {
+
+                //         data.push({
+                //             //x: data1.date[i],
+                //             y: data1.value[i]
+                //         });
+                //     }
+                //     return data;
+                // }()),
+                data:[50, 72, 82, 91, 69, 48, 65],
+                pointInterval: 24 * 36e5,
+                pointStart: Date.UTC(2017, 10, 20)
+            }]
+        }, function (c) {
+            activeLastPointToolip(c)
+        });
+    </script>
+
+</body>
+
+</html>
+
+​
